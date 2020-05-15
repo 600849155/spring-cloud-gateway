@@ -149,16 +149,19 @@ import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool
 @ConditionalOnClass(DispatcherHandler.class)
 public class GatewayAutoConfiguration {
 
+	/**
+	 * @Bean 后面的数字代表执行顺序
+	 */
 	@Configuration
 	@ConditionalOnClass(HttpClient.class)
 	protected static class NettyConfiguration {
-		@Bean
+		@Bean//1.2
 		@ConditionalOnMissingBean
 		public HttpClient httpClient(@Qualifier("nettyClientOptions") Consumer<? super HttpClientOptions.Builder> options) {
 			return HttpClient.create(options);
 		}
 
-		@Bean
+		@Bean//1.1
 		public Consumer<? super HttpClientOptions.Builder> nettyClientOptions(HttpClientProperties properties) {
 			return opts -> {
 
@@ -234,19 +237,19 @@ public class GatewayAutoConfiguration {
 			return new HttpClientProperties();
 		}
 
-		@Bean
+		@Bean//1.3
 		public NettyRoutingFilter routingFilter(HttpClient httpClient,
 												ObjectProvider<List<HttpHeadersFilter>> headersFilters,
 												HttpClientProperties properties) {
 			return new NettyRoutingFilter(httpClient, headersFilters, properties);
 		}
 
-		@Bean
+		@Bean//1.4
 		public NettyWriteResponseFilter nettyWriteResponseFilter(GatewayProperties properties) {
 			return new NettyWriteResponseFilter(properties.getStreamingMediaTypes());
 		}
 
-		@Bean
+		@Bean//1.5
 		public ReactorNettyWebSocketClient reactorNettyWebSocketClient(@Qualifier("nettyClientOptions") Consumer<? super HttpClientOptions.Builder> options) {
 			return new ReactorNettyWebSocketClient(options);
 		}
@@ -283,7 +286,7 @@ public class GatewayAutoConfiguration {
 	}
 
 	@Bean
-	@Primary
+	@Primary//有两个注入Bean时，优先注入这个
 	public RouteDefinitionLocator routeDefinitionLocator(List<RouteDefinitionLocator> routeDefinitionLocators) {
 		return new CompositeRouteDefinitionLocator(Flux.fromIterable(routeDefinitionLocators));
 	}
@@ -308,7 +311,7 @@ public class GatewayAutoConfiguration {
 		return new RouteRefreshListener(publisher);
 	}
 
-	@Bean
+	@Bean//2.6
 	public FilteringWebHandler filteringWebHandler(List<GlobalFilter> globalFilters) {
 		return new FilteringWebHandler(globalFilters);
 	}
@@ -317,7 +320,10 @@ public class GatewayAutoConfiguration {
 	public GlobalCorsProperties globalCorsProperties() {
 		return new GlobalCorsProperties();
 	}
-	
+
+	/**
+	 * 用于查找匹配到 Route ，并进行处理
+	 */
 	@Bean
 	public RoutePredicateHandlerMapping routePredicateHandlerMapping(
 			FilteringWebHandler webHandler, RouteLocator routeLocator,
@@ -328,7 +334,7 @@ public class GatewayAutoConfiguration {
 
 	// ConfigurationProperty beans
 
-	@Bean
+	@Bean //2.7
 	public GatewayProperties gatewayProperties() {
 		return new GatewayProperties();
 	}
@@ -364,12 +370,12 @@ public class GatewayAutoConfiguration {
 		return new AdaptCachedBodyGlobalFilter();
 	}
 
-	@Bean
+	@Bean//2.1
 	public RouteToRequestUrlFilter routeToRequestUrlFilter() {
 		return new RouteToRequestUrlFilter();
 	}
 
-	@Bean
+	@Bean//2.2
 	@ConditionalOnBean(DispatcherHandler.class)
 	public ForwardRoutingFilter forwardRoutingFilter(ObjectProvider<DispatcherHandler> dispatcherHandler) {
 		return new ForwardRoutingFilter(dispatcherHandler);
@@ -380,12 +386,12 @@ public class GatewayAutoConfiguration {
 		return new ForwardPathFilter();
 	}
 
-	@Bean
+	@Bean//2.3
 	public WebSocketService webSocketService() {
 		return new HandshakeWebSocketService();
 	}
 
-	@Bean
+	@Bean//2.4
 	public WebsocketRoutingFilter websocketRoutingFilter(WebSocketClient webSocketClient,
 														 WebSocketService webSocketService,
 														 ObjectProvider<List<HttpHeadersFilter>> headersFilters) {

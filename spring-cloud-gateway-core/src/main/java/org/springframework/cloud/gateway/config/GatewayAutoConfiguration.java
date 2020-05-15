@@ -150,7 +150,7 @@ import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool
 public class GatewayAutoConfiguration {
 
 	/**
-	 * @Bean 后面的数字代表执行顺序
+	 * Bean后面的数字代表执行顺序
 	 */
 	@Configuration
 	@ConditionalOnClass(HttpClient.class)

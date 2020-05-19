@@ -30,6 +30,7 @@ import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 /**
  * @author Spencer Gibb
+ * 同样遵循组件名前缀 + Definition 后缀的命名规范，用于定义 Filter
  */
 @Validated
 public class FilterDefinition {
@@ -40,6 +41,9 @@ public class FilterDefinition {
 	public FilterDefinition() {
 	}
 
+	/**
+	 * 读取application.yml上的default-filters/filters下的属性并放进aregs、name里
+	 */
 	public FilterDefinition(String text) {
 		int eqIdx = text.indexOf('=');
 		if (eqIdx <= 0) {

@@ -35,6 +35,7 @@ import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 /**
  * @author Spencer Gibb
+ * 该组件用来对 Route 信息进行定义，最终会被 RouteLocator 解析成 Route。
  */
 @Validated
 public class RouteDefinition {
@@ -51,6 +52,9 @@ public class RouteDefinition {
 	@NotNull
 	private URI uri;
 
+	/**
+	 * 定义序号，用于排序
+	 */
 	private int order = 0;
 
 	public RouteDefinition() {}

@@ -30,6 +30,7 @@ import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.t
 
 /**
  * @author Spencer Gibb
+ * RoutePredicateFactory 是所有 predicate factory 的顶级接口，职责就是生产 Predicate。
  */
 @FunctionalInterface
 public interface RoutePredicateFactory<C> extends ShortcutConfigurable, Configurable<C> {

@@ -27,6 +27,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 
 /**
  * @author Spencer Gibb
+ * GatewayFilterFactory 职责就是生产 GatewayFilter。
  */
 @FunctionalInterface
 public interface GatewayFilterFactory<C> extends ShortcutConfigurable, Configurable<C> {
@@ -34,7 +35,7 @@ public interface GatewayFilterFactory<C> extends ShortcutConfigurable, Configura
 	String NAME_KEY = "name";
 	String VALUE_KEY = "value";
 
-	// useful for javadsl
+	// useful for javadsl 核心方法用于生产GatewayFilter
 	default GatewayFilter apply(Consumer<C> consumer) {
 		C config = newConfig();
 		consumer.accept(config);

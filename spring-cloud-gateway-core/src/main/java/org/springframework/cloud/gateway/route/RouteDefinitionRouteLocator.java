@@ -54,12 +54,21 @@ import reactor.core.publisher.Flux;
 /**
  * {@link RouteLocator} that loads routes from a {@link RouteDefinitionLocator}
  * @author Spencer Gibb
+ * 用于将RouteDefinition 转换成 Route
  */
 public class RouteDefinitionRouteLocator implements RouteLocator, BeanFactoryAware, ApplicationEventPublisherAware {
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private final RouteDefinitionLocator routeDefinitionLocator;
+
+	/**
+	 * Predicate 工厂列表，会被映射成 key 为 name, value 为 factory 的 Map
+	 */
 	private final Map<String, RoutePredicateFactory> predicates = new LinkedHashMap<>();
+
+	/**
+	 * Gateway Filter 工厂列表 映射为map
+	 */
 	private final Map<String, GatewayFilterFactory> gatewayFilterFactories = new HashMap<>();
 	private final GatewayProperties gatewayProperties;
 	private final SpelExpressionParser parser = new SpelExpressionParser();

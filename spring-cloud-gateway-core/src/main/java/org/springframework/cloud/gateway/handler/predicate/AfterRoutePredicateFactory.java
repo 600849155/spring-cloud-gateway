@@ -47,6 +47,7 @@ public class AfterRoutePredicateFactory extends AbstractRoutePredicateFactory<Af
 		ZonedDateTime datetime = getZonedDateTime(config.getDatetime());
 		return exchange -> {
 			final ZonedDateTime now = ZonedDateTime.now();
+			/* 检查当前日期时间的时间是否晚于指定日期时间的时间 */
 			return now.isAfter(datetime);
 		};
 	}

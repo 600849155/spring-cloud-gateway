@@ -41,6 +41,9 @@ public class PredicateDefinition {
 	public PredicateDefinition() {
 	}
 
+	/**
+	 * 读取application.yml上的predicate下的属性并放进aregs、name里
+	 */
 	public PredicateDefinition(String text) {
 		int eqIdx = text.indexOf('=');
 		if (eqIdx <= 0) {

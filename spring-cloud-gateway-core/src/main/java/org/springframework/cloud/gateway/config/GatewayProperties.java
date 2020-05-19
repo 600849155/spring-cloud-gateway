@@ -34,14 +34,15 @@ import org.springframework.validation.annotation.Validated;
 
 /**
  * @author Spencer Gibb
+ * GatewayProperties 是 Spring cloud gateway 模块提供的外部化配置类。
  */
-@ConfigurationProperties("spring.cloud.gateway")
+@ConfigurationProperties("spring.cloud.gateway")//以“spring.cloud.gateway” 前缀的 properties 会绑定 GatewayProperties。
 @Validated
 public class GatewayProperties {
 
 	private final Log logger = LogFactory.getLog(getClass());
 	/**
-	 * List of Routes
+	 * List of Routes 用来对 Route 进行定义。
 	 */
 	@NotNull
 	@Valid
@@ -49,6 +50,8 @@ public class GatewayProperties {
 
 	/**
 	 * List of filter definitions that are applied to every route.
+	 * 用于定义默认的 Filter 列表，默认的 Filter 会应用到每一个 Route 上，
+	 * gateway 处理时会将其与 Route 中指定的 Filter 进行合并后并逐个执行。
 	 */
 	private List<FilterDefinition> defaultFilters = new ArrayList<>();
 
